@@ -4,7 +4,6 @@ Created on Tue Mar 30 16:43:12 2021
 
 @author: Leandro
 '''
-#Tablero básico de niveles de la cuenca SASD
 
 import dash
 import requests
@@ -108,28 +107,28 @@ t_now = (datetime.datetime.now(pytz.timezone('America/Buenos_Aires')) + datetime
 Niveles_Arroyos(t_30, t_now)
 
 try:
-    e1 = estaciones_hidrometricas['A° Las Piedras - Rep. del Libano']['serie']['nivel'].iloc[-1]
+    e1 = estaciones_hidrometricas['A° Las Piedras - Rep. del Libano']['serie']['nivel'][-1]
     t1 = estaciones_hidrometricas['A° Las Piedras - Rep. del Libano']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
 except:
     e1 = 999
     t1 = 'Sin datos'
 
 try:
-    e2 = estaciones_hidrometricas['A° Las Piedras - Av. Monteverde']['serie']['nivel'].iloc[-1]
+    e2 = estaciones_hidrometricas['A° Las Piedras - Av. Monteverde']['serie']['nivel'][-1]
     t2 = estaciones_hidrometricas['A° Las Piedras - Av. Monteverde']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
 except:
     e2 = 999
     t2 = 'Sin datos'
     
 try:
-    e3 = estaciones_hidrometricas['A° San Francisco - Av. Montevideo']['serie']['nivel'].iloc[-1]
+    e3 = estaciones_hidrometricas['A° San Francisco - Av. Montevideo']['serie']['nivel'][-1]
     t3 = estaciones_hidrometricas['A° San Francisco - Av. Montevideo']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
 except:
     e3 = 999
     t3 = 'Sin datos'
     
 try:
-    e4 = estaciones_hidrometricas['A° San Francisco - Dr. Torre']['serie']['nivel'].iloc[-1]
+    e4 = estaciones_hidrometricas['A° San Francisco - Dr. Torre']['serie']['nivel'][-1]
     t4 = estaciones_hidrometricas['A° San Francisco - Dr. Torre']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
 except:
     e4 = 999
