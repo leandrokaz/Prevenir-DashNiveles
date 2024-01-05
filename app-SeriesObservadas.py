@@ -106,33 +106,33 @@ t_30 = (datetime.datetime.now(pytz.timezone('America/Buenos_Aires')) - datetime.
 t_now = (datetime.datetime.now(pytz.timezone('America/Buenos_Aires')) + datetime.timedelta(days=1)).strftime('%Y-%m-%d 00%H:%M:%S')
 Niveles_Arroyos(t_30, t_now)
 
-try:
-    e1 = estaciones_hidrometricas['A° Las Piedras - Rep. del Libano']['serie']['nivel'][-1]
-    t1 = estaciones_hidrometricas['A° Las Piedras - Rep. del Libano']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
-except:
-    e1 = 999
-    t1 = 'Sin datos'
+# try:
+#     e1 = estaciones_hidrometricas['A° Las Piedras - Rep. del Libano']['serie']['nivel'][-1]
+#     t1 = estaciones_hidrometricas['A° Las Piedras - Rep. del Libano']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
+# except:
+#     e1 = 999
+#     t1 = 'Sin datos'
 
-try:
-    e2 = estaciones_hidrometricas['A° Las Piedras - Av. Monteverde']['serie']['nivel'][-1]
-    t2 = estaciones_hidrometricas['A° Las Piedras - Av. Monteverde']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
-except:
-    e2 = 999
-    t2 = 'Sin datos'
+# try:
+#     e2 = estaciones_hidrometricas['A° Las Piedras - Av. Monteverde']['serie']['nivel'][-1]
+#     t2 = estaciones_hidrometricas['A° Las Piedras - Av. Monteverde']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
+# except:
+#     e2 = 999
+#     t2 = 'Sin datos'
     
-try:
-    e3 = estaciones_hidrometricas['A° San Francisco - Av. Montevideo']['serie']['nivel'][-1]
-    t3 = estaciones_hidrometricas['A° San Francisco - Av. Montevideo']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
-except:
-    e3 = 999
-    t3 = 'Sin datos'
+# try:
+#     e3 = estaciones_hidrometricas['A° San Francisco - Av. Montevideo']['serie']['nivel'][-1]
+#     t3 = estaciones_hidrometricas['A° San Francisco - Av. Montevideo']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
+# except:
+#     e3 = 999
+#     t3 = 'Sin datos'
     
-try:
-    e4 = estaciones_hidrometricas['A° San Francisco - Dr. Torre']['serie']['nivel'][-1]
-    t4 = estaciones_hidrometricas['A° San Francisco - Dr. Torre']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
-except:
-    e4 = 999
-    t4 = 'Sin datos'
+# try:
+#     e4 = estaciones_hidrometricas['A° San Francisco - Dr. Torre']['serie']['nivel'][-1]
+#     t4 = estaciones_hidrometricas['A° San Francisco - Dr. Torre']['serie']['nivel'].index[-1].strftime('Último dato: %H:%M %d-%m-%Y')
+# except:
+#     e4 = 999
+#     t4 = 'Sin datos'
   
 #Código html  
 app.layout = html.Div(
