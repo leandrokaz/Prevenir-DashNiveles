@@ -27,7 +27,7 @@ estaciones_hidrometricas = {
     'A° Las Piedras - Rep. del Libano': {
             'arroyo': 'Las Piedras',
             'unid': 3348,
-            'key': 3,
+            'key': 12,
             'table': 'alturas_all',
             'Lat': -34.7383417,
             'Long': -58.3096056,
@@ -36,7 +36,8 @@ estaciones_hidrometricas = {
             'alerta_amarilla': 3,
             'alerta_naranja': 4,
             'alerta_roja': 4.5,
-            'escalado': 2.10},
+            'escalado': 3.2, #2.15,
+            'name_sim': 'LP_Libano'},
     'A° Las Piedras - Av. Monteverde': {
             'arroyo': 'Las Piedras',
             'unid': 26201,
@@ -49,11 +50,12 @@ estaciones_hidrometricas = {
             'alerta_amarilla': 3,
             'alerta_naranja': 4,
             'alerta_roja': 4.5,
-            'escalado': 2.70},
+            'escalado': 2.78,
+            'name_sim': 'LP_Monteverde'},
     'A° San Francisco - Av. Montevideo': {
             'arroyo': 'San Francisco',
             'unid': 3349,
-            'key': 5,
+            'key': 9, #5,
             'table': 'alturas_all',
             'Lat': -34.7277556,
             'Long': -58.3200389,
@@ -62,7 +64,8 @@ estaciones_hidrometricas = {
             'alerta_amarilla': 3,
             'alerta_naranja': 4,
             'alerta_roja': 4.5,
-            'escalado': 2.15},
+            'escalado': 3.3, #2.03,
+            'name_sim': 'SF_Montevideo'},
     'A° San Francisco - Dr. Torre': {
             'arroyo': 'San Francisco',
             'unid': 3349,
@@ -75,27 +78,83 @@ estaciones_hidrometricas = {
             'alerta_amarilla': 3,
             'alerta_naranja': 4,
             'alerta_roja': 4.5,
-            'escalado': 2.70}}
+            'escalado': 2.72,
+            'name_sim': 'SF_DrTorre'},
+    'Canal Santo Domingo - EB Olmos': {
+            'arroyo': 'Santo Domingo',
+            'unid': 3349,
+            'key': 11,
+            'table': 'alturas_all',
+            'Lat': -34.687666,
+            'Long': -58.3239342,
+            'color': '#33FFFF',
+            'Interseccion': 'San Isidro',
+            'alerta_amarilla': 3,
+            'alerta_naranja': 4,
+            'alerta_roja': 4.5,
+            'escalado': 3.5,
+            'name_sim': 'SD_Olmos'},
+    'Arroyo Galindez - Parque Finky': {
+            'arroyo': 'Galindez',
+            'unid': 3349,
+            'key': 13,
+            'table': 'alturas_all',
+            'Lat': -34.788203,
+            'Long': -58.3986461,
+            'color': '#E20E1B',
+            'Interseccion': 'Santa Maria',
+            'alerta_amarilla': 3,
+            'alerta_naranja': 4,
+            'alerta_roja': 4.5,
+            'escalado': 2.4,
+            'name_sim': 'Finky'}}
 
 # Función de lectura de datos y llenado de diccionario
 def Niveles_Arroyos(date_i, date_f):
     for estacion in estaciones_hidrometricas.keys():      
-        req = 'http://api.fdx-ingenieria.com.ar/api_new?user=pabloegarcia@gmail.com&site_id=' + str(estaciones_hidrometricas[estacion]['key']) + '&query=filter_site&date=' + date_i + '@' + date_f
-        data = requests.get(req)
-        json_data = data.json()
-        niveles = []
-        if len(json_data) != 0:
-            niveles = pd.DataFrame(json_data)
-            niveles['fecha'] = pd.to_datetime(niveles['hora'])
-            niveles = niveles.set_index('fecha').tz_localize(tz='America/Buenos_Aires')
-            niveles = niveles.drop(labels=['id','marca', 'modelo', 'serie', 'latitude', 'longitude', 'name', 'hora'], axis = 1)
-            niveles['nivel'] = niveles['nivel'].astype(float) - estaciones_hidrometricas[estacion]['escalado']
-            niveles = niveles.sort_index()
-            estaciones_hidrometricas[estacion].update({'serie': niveles})
+        if estaciones_hidrometricas[estacion]['key'] in [29, 8]:
+            req = 'http://api.fdx-ingenieria.com.ar/api_new?user=pabloegarcia@gmail.com&site_id=' + str(estaciones_hidrometricas[estacion]['key']) + '&query=filter_site&date=' + date_i + '@' + date_f
+            data = requests.get(req)
+            json_data = data.json()
+            niveles = []
+            print(estacion)
+            if len(json_data) != 0:
+                niveles = pd.DataFrame(json_data)
+                niveles['fecha'] = pd.to_datetime(niveles['hora'])
+                niveles = niveles.set_index('fecha').tz_localize(tz='America/Buenos_Aires')
+                niveles = niveles.drop(labels=['id','marca', 'modelo', 'serie', 'latitude', 'longitude', 'name', 'hora'], axis = 1)
+                niveles['nivel'] = niveles['nivel'].astype(float) - estaciones_hidrometricas[estacion]['escalado']
+                niveles['nivel'].replace(estaciones_hidrometricas[estacion]['escalado'], '', inplace=True)
+                print(niveles)
+                niveles = niveles.sort_index()
+                estaciones_hidrometricas[estacion].update({'serie': niveles})
+            else:
+                niveles = pd.DataFrame(data= {'nivel':[]})
+                estaciones_hidrometricas[estacion].update({'serie': niveles})
+
         else:
-            niveles = pd.DataFrame(data= {'nivel':[]})
-            estaciones_hidrometricas[estacion].update({'serie': niveles})
+            req = 'http://69.28.90.79:5000/api/rango?topic=telemetria_' + str(estaciones_hidrometricas[estacion]['key']) + '/nivel&fecha_inicio=' + date_i + '&fecha_fin=' + date_f
+            data = requests.get(req)
+            json_data = data.json()
+            niveles = []
+            print(estacion)
+            if len(json_data) != 0:
+                niveles = pd.DataFrame(json_data)
+                niveles['fecha'] = pd.to_datetime(niveles['time'])
+                niveles = niveles.set_index('fecha').tz_localize(tz='GMT+0').tz_convert(tz='America/Buenos_Aires')
+                #niveles = niveles.drop(labels=['id','marca', 'modelo', 'serie', 'latitude', 'longitude', 'name', 'hora'], axis = 1)
+                niveles['Nivel'] = estaciones_hidrometricas[estacion]['escalado'] -  niveles['Nivel'].astype(float)
+                niveles['Nivel'].replace(estaciones_hidrometricas[estacion]['escalado'], '', inplace=True)
+                niveles.rename(columns={'Nivel': 'nivel'}, inplace=True)
+                print(niveles)
+                niveles = niveles.sort_index()
+                estaciones_hidrometricas[estacion].update({'serie': niveles})
+            else:
+                niveles = pd.DataFrame(data= {'nivel':[]})
+                estaciones_hidrometricas[estacion].update({'serie': niveles})
+
         #print(estaciones_hidrometricas[estacion]['serie'])
+        #niveles.to_csv(estacion + '.csv')
     return ()
 
 escala_temporal = pd.DataFrame({'label': ['30 días', '7 días', '5 días', '3 días', '2 días', '1 día', '12 horas', '6 horas', '3 horas', '1 hora'],
